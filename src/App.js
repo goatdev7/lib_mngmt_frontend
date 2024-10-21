@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Register from './components/registerUser';
+import Login from './components/login';
+import NavBar from './components/navBar';
+import BookList from './components/bookList';
+import HomePage from './components/HomePage';
 
 function App() {
+const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+useEffect( () => {
+  const token = localStorage.getItem('token');
+  if (token){
+    setIsAuthenticated(true);
+  }}, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <NavBar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated}/>} />
+        <Route path="/books" element={<BookList />} />
+      </Routes>
+    </Router>
   );
 }
 
