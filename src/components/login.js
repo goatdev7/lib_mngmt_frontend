@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import axios from 'axios';
-import './login.css'; 
+import './styling/login.css'; 
 
 const Login = ({ setIsAuthenticated }) => {
   const [formData, setFormData] = useState({

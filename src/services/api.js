@@ -18,4 +18,9 @@ export const registerUser = async (userData) =>{
     return response.data;
 };
 
+export const addBooks = async (bookData) =>{
+    const response = await api.post('addbooks/', bookData);
+    return response.data;
+};
+
 export default api;

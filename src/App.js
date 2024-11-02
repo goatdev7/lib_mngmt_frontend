@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Register from './components/registerUser';
 import Login from './components/login';
 import NavBar from './components/navBar';
-import BookList from './components/bookList';
+import {BookList, AddBook} from './components/bookList';
+// import AddBook from './components/bookList';
 import HomePage from './components/HomePage';
 
 function App() {
@@ -24,6 +25,7 @@ useEffect( () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated}/>} />
         <Route path="/books" element={<BookList />} />
+        <Route path="/addbooks" element={<AddBook />} />
       </Routes>
     </Router>
   );

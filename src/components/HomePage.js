@@ -1,7 +1,7 @@
 // src/components/HomePage.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './HomePage.css';
+import './styling/HomePage.css';
 
 const HomePage = () => {
   const isAuthenticated = !!localStorage.getItem('token'); // Check if the user is logged in
@@ -19,6 +19,7 @@ const HomePage = () => {
       ) : (
         <div className="auth-buttons">
           <Link to="/books" className="btn">View Books</Link>
+          <Link to="/addbooks" className="btn">Add Books</Link>
           <button
             className="btn"
             onClick={() => {
