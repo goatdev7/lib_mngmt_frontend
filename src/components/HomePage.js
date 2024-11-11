@@ -1,10 +1,32 @@
 // src/components/HomePage.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { Link } from 'react-router-dom';
 import './styling/HomePage.css';
+import axios from 'axios';
 
 const HomePage = () => {
-  const isAuthenticated = !!localStorage.getItem('token'); // Check if the user is logged in
+  const isAuthenticated = !!localStorage.getItem('token');
+  const [isLibrarian, setIsLibrarian] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      checkUserRole();
+    }
+  }, [isAuthenticated]);
+
+
+  const checkUserRole = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/user/', {
+        headers: { Authorization: `Token ${token}` },
+      });
+      setIsLibrarian(response.data.is_staff || response.data.groups.includes('librarians'));
+    } catch (error) {
+      console.log("Error fetching user role:");
+    }
+  };
 
   return (
     <div className="homepage-container">
@@ -19,7 +41,7 @@ const HomePage = () => {
       ) : (
         <div className="auth-buttons">
           <Link to="/books" className="btn">View Books</Link>
-          <Link to="/addbooks" className="btn">Add Books</Link>
+          {isLibrarian && <Link to="/addbooks" className="btn">Add Books</Link>}
           <button
             className="btn"
             onClick={() => {

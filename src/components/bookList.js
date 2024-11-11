@@ -8,6 +8,7 @@ import './styling/bookList.css';
 export const BookList = () => {
   const [books, setBooks] = useState([]); // Ensure it's an array initially
   const [error, setError] = useState('');
+
   const [searched_book, setSearchedBook] = useState([]); // Ensure it's an array initially
   const [searchQuery, setSearchQuery] = useState(''); // To store search input
   const navigate = useNavigate();
@@ -21,8 +22,10 @@ export const BookList = () => {
       return;
     }
 
-    fetchBookAll(); // Initial fetch without search parameters
+    // Initial fetch without search parameters
+    fetchBookAll(); 
   }, [navigate]);
+
 
   const fetchBooks = async (search) => {
     try {
@@ -147,11 +150,11 @@ export const AddBook = () => {
     // Check if the user is authenticated
     const token = localStorage.getItem('token');
     if (!token) {
-      navigate('/login'); // Redirect to login if not authenticated
+      // Redirect to login if not authenticated
+      navigate('/login'); 
       return;
     }
 
-    // BookList.fetchBookAll(); // Initial fetch without search parameters
   }, [navigate]);
   const formatDate = (date) => {
     const d = new Date(date);
@@ -160,10 +163,10 @@ export const AddBook = () => {
     const day = (`0${d.getDate()}`).slice(-2);
     return `${year}-${month}-${day}`;
   };
-  
-  const handleInputChange = (e) =>{
-    const {name, value} = e.target;
-    setAddBook({...addBook, [name]: name === 'pub_date' ? formatDate(value): value});
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setAddBook({ ...addBook, [name]: name === 'pub_date' ? formatDate(value) : value });
   };
 
 
@@ -172,22 +175,22 @@ export const AddBook = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://127.0.0.1:8000/api/books/', 
-        JSON.stringify(addBook), 
+        'http://127.0.0.1:8000/api/books/',
+        JSON.stringify(addBook),
         {
           headers: {
-            Authorization: `Token ${token}`, 
+            Authorization: `Token ${token}`,
             'Content-Type': 'application/json',
           },
         }
       );
-  
+
       // Update books state with the new book entry
       setBooks([...books, response.data]);
       setAddBook({ title: '', author: '', description: '', isbn: '', pub_date: '' });
     } catch (error) {
       if (error.response && error.response.data) {
-        console.log(error.response.data); 
+        console.log(error.response.data);
         setError(error.response.data);
       } else {
         setError('Failed to add book. Please check your input or login status.');
@@ -197,9 +200,9 @@ export const AddBook = () => {
 
   return (
     <div className="book-list-container">
-    {/* Add Book Form */ }
+      {/* Add Book Form */}
 
-    < form className = "add-book-form" onSubmit = { handleAddBook } >
+      < form className="add-book-form" onSubmit={handleAddBook} >
         <h3>Add a New Book</h3>
         <input
           type="text"
@@ -243,7 +246,7 @@ export const AddBook = () => {
         />
         <button type="submit" className="add-button">Add Book</button>
       </form >
-      </div>
+    </div>
   )
 
 };
