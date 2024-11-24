@@ -23,14 +23,14 @@ export const BookList = () => {
     }
 
     // Initial fetch without search parameters
-    fetchBookAll(); 
+    // fetchBookAll(); 
+    fetchBooks(''); 
   }, [navigate]);
 
 
   const fetchBooks = async (search) => {
     try {
       const token = localStorage.getItem('token');
-      console.log("token", token);
       const response = await axios.get(`http://127.0.0.1:8000/api/my-books/?search=${search}`, {
         headers: {
           Authorization: `Token ${token}`,
@@ -42,23 +42,33 @@ export const BookList = () => {
     }
   };
 
-  const fetchBookAll = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(`http://127.0.0.1:8000/api/books/`, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      });
-      setBooks(response.data.results);
-    } catch (error) {
-      setError('Failed to fetch books. Please check your connection or login.');
-    }
-  };
+  // const fetchBookAll = async () => {
+  //   try {
+  //     const token = localStorage.getItem('token');
+  //     const response = await axios.get(`http://127.0.0.1:8000/api/books/`, {
+  //       headers: {
+  //         Authorization: `Token ${token}`,
+  //       },
+  //     });
+  //     setBooks(response.data.results);
+  //   } catch (error) {
+  //     setError('Failed to fetch books. Please check your connection or login.');
+  //   }
+  // };
 
   // Handle search input change
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
+    const query = e.target.value;
+
+    setSearchQuery(query);
+    if (query === ''){
+      fetchBooks('');
+    }
+    // // Uncomment the else block if API calls need to be restrained
+    // // This is an alternative to search submit mechanism
+    // else{
+    //   fetchBooks(query);
+    // }
   };
 
   // Handle search form submit
@@ -66,17 +76,13 @@ export const BookList = () => {
     e.preventDefault();
 
     // Fetch books based on the search query
-    if (searchQuery === '') {
-      fetchBookAll();
-    }
-    else {
-      fetchBooks(searchQuery);
-    }
+    fetchBooks(searchQuery);
   };
 
   const handleClearSearch = () => {
     setSearchQuery('');
-    fetchBookAll(); // Fetch all books again
+    fetchBooks('');
+    // fetchBookAll(); // Fetch all books again
     setSearchedBook([]);
   };
 
